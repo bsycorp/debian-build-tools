@@ -15,5 +15,5 @@ RUN export TERRAFORM_VERSION="0.11.8"; \
 RUN export KOPS_VERSION="1.10.0"; \
 			curl -sSL https://github.com/kubernetes/kops/releases/download/${KOPS_VERSION}/kops-linux-amd64 -o /tmp/kops && \
 			echo "ccc64c44daa9ee6d4a63bc27f42135983527a37b98edca953488444a46797d9f  /tmp/kops" | sha256sum -c - && \
-			cp /tmp/kops /usr/bin
+			cp /tmp/kops /usr/bin && chmod +x /usr/bin/kops
 			
