@@ -5,7 +5,7 @@ RUN curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add 
 			echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list
 RUN install_packages bash jq curl wget telnet vim \
             tree dnsutils tcpdump less groff unzip zip postgresql-client \
-            libedit2 python-pip
+            libedit2 python-pip python-setuptools
 
 RUN pip install awscli
 
