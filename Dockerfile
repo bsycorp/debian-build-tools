@@ -5,7 +5,14 @@ RUN curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add 
 			echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list
 RUN install_packages bash jq curl wget telnet vim \
             tree dnsutils tcpdump less groff unzip zip postgresql-client \
-            libedit2 kubectl awscli
+            libedit2 python-pip
+
+RUN pip install awscli
+
+RUN export KUBECTL_VERSION="v1.9.11"; \
+			curl -sSL https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl -o /tmp/kubectl && \
+			echo "2db43c1b321b98fb9727d7baab7c97645f9fcb306ee5ae311297021773c2ed2a  /tmp/kubectl" | sha256sum -c - && \
+			cp /tmp/kubectl /usr/bin && chmod +x /usr/bin/kubectl
 
 RUN export TERRAFORM_VERSION="0.11.8"; \
 			curl -sSL https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -o /tmp/terraform.zip && \
