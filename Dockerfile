@@ -11,7 +11,7 @@ RUN pip install awscli
 
 RUN export KUBECTL_VERSION="v1.9.11"; \
 			curl -sSL https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl -o /tmp/kubectl && \
-			echo "2db43c1b321b98fb9727d7baab7c97645f9fcb306ee5ae311297021773c2ed2a  /tmp/kubectl" | sha256sum -c - && \
+			echo "3aa80b62fbd9cfa082aa26ae6a141a6ac209543d31e6f88ad5df47842ed8ddc3  /tmp/kubectl" | sha256sum -c - && \
 			cp /tmp/kubectl /usr/bin && chmod +x /usr/bin/kubectl
 
 RUN export TERRAFORM_VERSION="0.11.8"; \
