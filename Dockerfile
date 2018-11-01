@@ -1,17 +1,14 @@
-FROM bitnami/minideb:stretch
+FROM bitnami/minideb:jessie
 RUN install_packages apt-transport-https curl gnupg2 ca-certificates
-RUN curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -; \
-			mkdir -p /etc/apt/sources.list.d/ && touch /etc/apt/sources.list.d/kubernetes.list && \
-			echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list
-RUN install_packages bash jq curl wget telnet vim \
+RUN install_packages bash jq curl wget telnet vim zip unzip \
             tree dnsutils tcpdump less groff unzip zip postgresql-client \
             libedit2 python-pip python-setuptools
 
 RUN pip install awscli
 
-RUN export KUBECTL_VERSION="v1.9.11"; \
+RUN export KUBECTL_VERSION="v1.10.9"; \
 			curl -sSL https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl -o /tmp/kubectl && \
-			echo "3aa80b62fbd9cfa082aa26ae6a141a6ac209543d31e6f88ad5df47842ed8ddc3  /tmp/kubectl" | sha256sum -c - && \
+			echo "c899c110b71121f907c05da72e5d3ed33397d28648f35e895d452ffd98cf35bf  /tmp/kubectl" | sha256sum -c - && \
 			cp /tmp/kubectl /usr/bin && chmod +x /usr/bin/kubectl
 
 RUN export TERRAFORM_VERSION="0.11.8"; \
@@ -25,3 +22,5 @@ RUN export KOPS_VERSION="1.10.0"; \
 			echo "ccc64c44daa9ee6d4a63bc27f42135983527a37b98edca953488444a46797d9f  /tmp/kops" | sha256sum -c - && \
 			cp /tmp/kops /usr/bin && chmod +x /usr/bin/kops && ln -s /usr/bin/kops /usr/local/bin/kops
 			
+RUN curl -sSL https://s3.amazonaws.com/cloudhsmv2-software/CloudHsmClient/Xenial/cloudhsm-client_latest_amd64.deb -o /tmp/cloudhsm.deb && \
+			install_packages libjson-c2 && dpkg -i /tmp/cloudhsm.deb
