@@ -23,4 +23,7 @@ RUN export KOPS_VERSION="1.10.0"; \
 			cp /tmp/kops /usr/bin && chmod +x /usr/bin/kops && ln -s /usr/bin/kops /usr/local/bin/kops
 			
 RUN curl -sSL https://s3.amazonaws.com/cloudhsmv2-software/CloudHsmClient/Xenial/cloudhsm-client_latest_amd64.deb -o /tmp/cloudhsm.deb && \
-			install_packages libjson-c2 && dpkg -i /tmp/cloudhsm.deb
+			install_packages libjson-c2 && dpkg -i /tmp/cloudhsm.deb && \
+		    touch /opt/cloudhsm/etc/customerCA.crt && \
+		    chmod -R 777 /opt/cloudhsm/etc && \
+		    rm /tmp/cloudhsm.deb
