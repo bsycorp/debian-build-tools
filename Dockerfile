@@ -11,9 +11,9 @@ RUN export KUBECTL_VERSION="v1.10.9"; \
 			echo "c899c110b71121f907c05da72e5d3ed33397d28648f35e895d452ffd98cf35bf  /tmp/kubectl" | sha256sum -c - && \
 			cp /tmp/kubectl /usr/bin && chmod +x /usr/bin/kubectl
 
-RUN export TERRAFORM_VERSION="0.11.8"; \
+RUN export TERRAFORM_VERSION="0.11.10"; \
 			curl -sSL https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -o /tmp/terraform.zip && \
-			echo "84ccfb8e13b5fce63051294f787885b76a1fedef6bdbecf51c5e586c9e20c9b7  /tmp/terraform.zip" | sha256sum -c - && \
+			echo "43543a0e56e31b0952ea3623521917e060f2718ab06fe2b2d506cfaa14d54527  /tmp/terraform.zip" | sha256sum -c - && \
 			unzip /tmp/terraform.zip -d /usr/bin
 RUN curl https://raw.githubusercontent.com/bsycorp/terraform-provider-shell/master/local.sh | bash
 			
