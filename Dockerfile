@@ -1,9 +1,11 @@
 FROM bitnami/minideb:jessie
-RUN install_packages apt-transport-https curl gnupg2 ca-certificates
-RUN install_packages bash jq curl wget telnet vim zip unzip \
+RUN install_packages apt-transport-https curl gnupg2 ca-certificates software-properties-common
+RUN install_packages bash jq wget telnet vim zip unzip \
             tree dnsutils tcpdump less groff unzip zip postgresql-client \
-            libedit2 python-pip python-setuptools
-
+            libedit2 python-pip python-setuptools lsb-release
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
+            add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" && \
+            install_packages docker-ce
 RUN pip install awscli
 
 RUN export KUBECTL_VERSION="v1.10.9"; \
@@ -27,3 +29,7 @@ RUN curl -sSL https://s3.amazonaws.com/cloudhsmv2-software/CloudHsmClient/Xenial
 		    touch /opt/cloudhsm/etc/customerCA.crt && \
 		    chmod -R 777 /opt/cloudhsm/etc && \
 		    rm /tmp/cloudhsm.deb
+
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
