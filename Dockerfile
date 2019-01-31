@@ -6,7 +6,7 @@ RUN install_packages bash jq wget telnet vim zip unzip \
 RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
             add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" && \
             install_packages docker-ce
-RUN pip install awscli
+RUN pip install 'awscli==1.16.59'
 
 RUN export KUBECTL_VERSION="v1.10.9"; \
 			curl -sSL https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl -o /tmp/kubectl && \
