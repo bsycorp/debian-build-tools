@@ -30,9 +30,7 @@ RUN curl -sSL https://s3.amazonaws.com/cloudhsmv2-software/CloudHsmClient/Xenial
 		    chmod -R 777 /opt/cloudhsm/etc && \
 		    rm /tmp/cloudhsm.deb
 
-RUN curl -sSL https://github.com/rlister/ecr-login/releases/download/v0.1.0/ecr-login_0.1.0_linux_amd64.tar.gz -o /tmp/ecr-login.tar.gz && \
-			echo "a4455a298f5c32688174511943341e4bfdfa961e82d491efb6468d4e83e6b850" /tmp/ecr-login.tar.gz | sha256sum -c - && \
-			tar xzf /tmp/ecr-login.tar.gz -C /tmp --strip 1 && mv /tmp/ecr-login /usr/bin
-
 COPY start-docker /usr/bin/start-docker
+COPY docker-credential-ecr-login /usr/bin/docker-credential-ecr-login
+COPY docker-config.json /root/.docker/config.json
 
