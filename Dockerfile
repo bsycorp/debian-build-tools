@@ -24,15 +24,9 @@ RUN export KOPS_VERSION="1.10.0"; \
 			echo "ccc64c44daa9ee6d4a63bc27f42135983527a37b98edca953488444a46797d9f  /tmp/kops" | sha256sum -c - && \
 			cp /tmp/kops /usr/bin && chmod +x /usr/bin/kops && ln -s /usr/bin/kops /usr/local/bin/kops
 			
-RUN curl -sSL https://s3.amazonaws.com/cloudhsmv2-software/CloudHsmClient/Xenial/cloudhsm-client_latest_amd64.deb -o /tmp/cloudhsm.deb && \
-			install_packages libjson-c2 && dpkg -i /tmp/cloudhsm.deb && \
-		    touch /opt/cloudhsm/etc/customerCA.crt && \
-		    chmod -R 777 /opt/cloudhsm/etc && \
-		    rm /tmp/cloudhsm.deb
-
-RUN curl -sSL https://github.com/rlister/ecr-login/releases/download/v0.1.0/ecr-login_0.1.0_linux_amd64.tar.gz -o /tmp/ecr-login.tar.gz && \
-			echo "a4455a298f5c32688174511943341e4bfdfa961e82d491efb6468d4e83e6b850" /tmp/ecr-login.tar.gz | sha256sum -c - && \
-			tar xzf /tmp/ecr-login.tar.gz -C /tmp --strip 1 && mv /tmp/ecr-login /usr/bin/docker-credential-secretservice
+RUN curl -sSL https://github.com/lox/amazon-ecr-credential-helper/releases/download/v1.0.0/docker-credential-ecr-login_linux_amd64 -o /tmp/docker-credential-secretservice && \
+			echo "e17cc4baf6215d551fcf07cac0c435a4f027b9bcb9a14f24ee793448f2c535f4  /tmp/docker-credential-secretservice" | sha256sum -c - && \
+			mv /tmp/docker-credential-secretservice /usr/bin/docker-credential-secretservice && \
+			chmod 755 /usr/bin/docker-credential-secretservice
 
 COPY start-docker /usr/bin/start-docker
-
