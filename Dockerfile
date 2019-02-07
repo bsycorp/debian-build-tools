@@ -23,10 +23,5 @@ RUN export KOPS_VERSION="1.11.0"; \
 			curl -sSL https://github.com/kubernetes/kops/releases/download/${KOPS_VERSION}/kops-linux-amd64 -o /tmp/kops && \
 			echo "3804b9975955c0f0a903ab0a81cf80459ad00375a42c08f2c959d81c5b246fe2  /tmp/kops" | sha256sum -c - && \
 			cp /tmp/kops /usr/bin && chmod +x /usr/bin/kops && ln -s /usr/bin/kops /usr/local/bin/kops
-			
-RUN curl -sSL https://github.com/lox/amazon-ecr-credential-helper/releases/download/v1.0.0/docker-credential-ecr-login_linux_amd64 -o /tmp/docker-credential-secretservice && \
-			echo "e17cc4baf6215d551fcf07cac0c435a4f027b9bcb9a14f24ee793448f2c535f4  /tmp/docker-credential-secretservice" | sha256sum -c - && \
-			mv /tmp/docker-credential-secretservice /usr/bin/docker-credential-secretservice && \
-			chmod 755 /usr/bin/docker-credential-secretservice
 
 COPY start-docker /usr/bin/start-docker
