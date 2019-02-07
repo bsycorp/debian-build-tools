@@ -8,9 +8,9 @@ RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
             install_packages docker-ce
 RUN pip install 'awscli==1.16.59'
 
-RUN export KUBECTL_VERSION="v1.10.9"; \
+RUN export KUBECTL_VERSION="v1.11.6"; \
 			curl -sSL https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl -o /tmp/kubectl && \
-			echo "c899c110b71121f907c05da72e5d3ed33397d28648f35e895d452ffd98cf35bf  /tmp/kubectl" | sha256sum -c - && \
+			echo "92c2abb450af253e4a61bef56787a765e921fbc25d5e6343cf33946033b62976  /tmp/kubectl" | sha256sum -c - && \
 			cp /tmp/kubectl /usr/bin && chmod +x /usr/bin/kubectl
 
 RUN export TERRAFORM_VERSION="0.11.10"; \
@@ -19,9 +19,9 @@ RUN export TERRAFORM_VERSION="0.11.10"; \
 			unzip /tmp/terraform.zip -d /usr/bin
 RUN curl https://raw.githubusercontent.com/bsycorp/terraform-provider-shell/master/local.sh | bash
 			
-RUN export KOPS_VERSION="1.10.0"; \
+RUN export KOPS_VERSION="1.11.0"; \
 			curl -sSL https://github.com/kubernetes/kops/releases/download/${KOPS_VERSION}/kops-linux-amd64 -o /tmp/kops && \
-			echo "ccc64c44daa9ee6d4a63bc27f42135983527a37b98edca953488444a46797d9f  /tmp/kops" | sha256sum -c - && \
+			echo "3804b9975955c0f0a903ab0a81cf80459ad00375a42c08f2c959d81c5b246fe2  /tmp/kops" | sha256sum -c - && \
 			cp /tmp/kops /usr/bin && chmod +x /usr/bin/kops && ln -s /usr/bin/kops /usr/local/bin/kops
 			
 RUN curl -sSL https://github.com/lox/amazon-ecr-credential-helper/releases/download/v1.0.0/docker-credential-ecr-login_linux_amd64 -o /tmp/docker-credential-secretservice && \
