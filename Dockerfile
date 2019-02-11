@@ -1,4 +1,16 @@
-FROM bitnami/minideb:jessie
+FROM golang:1.10
+RUN export GOPATH=/go \
+    && export PATH=$GOPATH/bin:$PATH \
+    && chmod -R 777 $GOPATH \
+    && APP_REPO=github.com/awslabs/amazon-ecr-credential-helper \
+    && git clone https://$APP_REPO $GOPATH/src/$APP_REPO \
+    && cd $GOPATH/src/$APP_REPO \
+    && GOOS=linux CGO_ENABLED=0 go build -installsuffix cgo \
+       -a -ldflags '-s -w' -o /usr/bin/docker-credential-ecr-login \
+       ./ecr-login/cli/docker-credential-ecr-login 
+
+FROM bitnami/minideb:stretch
+COPY --from=0 /usr/bin/docker-credential-ecr-login /usr/bin/docker-credential-secretservice
 RUN install_packages apt-transport-https curl gnupg2 ca-certificates software-properties-common
 RUN install_packages bash jq wget telnet vim zip unzip \
             tree dnsutils tcpdump less groff unzip zip postgresql-client \
