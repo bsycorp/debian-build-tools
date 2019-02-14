@@ -1,6 +1,10 @@
 #!/bin/bash
 
 set -e
+
+mkdir -p /root/.docker/
+echo '{"credsStore":"ecr-login"}' > /root/.docker/config.json
+
 echo "Starting docker daemon..."
 /usr/bin/dockerd --host=unix:///var/run/docker.sock &>/var/log/docker.log &
 

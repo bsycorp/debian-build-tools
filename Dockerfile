@@ -10,7 +10,7 @@ RUN export GOPATH=/go \
        ./ecr-login/cli/docker-credential-ecr-login 
 
 FROM bitnami/minideb:stretch
-COPY --from=0 /usr/bin/docker-credential-ecr-login /usr/bin/docker-credential-secretservice
+COPY --from=0 /usr/bin/docker-credential-ecr-login /usr/bin/docker-credential-ecr-login
 RUN install_packages apt-transport-https curl gnupg2 ca-certificates software-properties-common
 RUN install_packages bash jq wget telnet vim zip unzip \
             tree dnsutils tcpdump less groff unzip zip postgresql-client \
