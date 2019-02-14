@@ -17,7 +17,7 @@ RUN install_packages bash jq wget telnet vim zip unzip \
             libedit2 python-pip python-setuptools lsb-release
 RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
             add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" && \
-            install_packages docker-ce
+            install_packages docker-ce=18.06.2~ce~3-0~debian
 RUN pip install 'awscli==1.16.59'
 
 RUN export KUBECTL_VERSION="v1.11.6"; \
