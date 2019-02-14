@@ -4,6 +4,8 @@ set -e
 
 mkdir -p /root/.docker/
 echo '{"credsStore":"ecr-login"}' > /root/.docker/config.json
+mkdir -p /etc/docker
+echo '{"max-concurrent-downloads":50, "max-concurrent-uploads":50}' > /etc/docker/daemon.json
 
 echo "Starting docker daemon..."
 /usr/bin/dockerd --host=unix:///var/run/docker.sock &>/var/log/docker.log &
