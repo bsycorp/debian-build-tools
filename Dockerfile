@@ -37,3 +37,4 @@ RUN export KOPS_VERSION="1.11.0"; \
 			cp /tmp/kops /usr/bin && chmod +x /usr/bin/kops && ln -s /usr/bin/kops /usr/local/bin/kops
 
 COPY start-docker /usr/bin/start-docker
+COPY codebuild-creds /usr/bin/codebuild-creds

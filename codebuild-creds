@@ -1,0 +1,13 @@
+#!/bin/bash
+# get creds from codebuild metadata and write to aws credentials file for things to use
+# tools like terraform, docker credential helper etc don't support / understand the codebuild metadata properly and fail
+
+eval $(curl 169.254.170.2$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI | jq 'to_entries | [ .[] | select(.key | (contains("Expiration") or contains("RoleArn"))  | not) ] |  map(if .key == "AccessKeyId" then . + {"key":"AWS_ACCESS_KEY_ID"} else . end) | map(if .key == "SecretAccessKey" then . + {"key":"AWS_SECRET_ACCESS_KEY"} else . end) | map(if .key == "Token" then . + {"key":"AWS_SESSION_TOKEN"} else . end) | map("export \(.key)=\(.value)") | .[]' -r)
+
+mkdir -p ~/.aws/
+cat << EOF > ~/.aws/credentials
+[default]
+aws_access_key_id=$AWS_ACCESS_KEY_ID
+aws_secret_access_key=$AWS_SECRET_ACCESS_KEY
+aws_session_token=$AWS_SESSION_TOKEN
+EOF
