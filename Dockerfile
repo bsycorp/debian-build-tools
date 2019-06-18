@@ -30,7 +30,9 @@ RUN curl -sSL https://github.com/tfutils/tfenv/releases/download/v1.0.0/tfenv-v1
     unzip /tmp/tfenv.zip -d /usr/local
 # The validation done by tfenv is not so great, so we just do it ourselves.
 RUN tfenv install 0.12.1 && \
+    tfenv install 0.12.2 && \
     tfenv install 0.11.10 && \
+    echo "784af019360c38942b07d48678a8c633de4fb91bcf51925478bda9611d7b9001  /usr/local/versions/0.12.2/terraform" | sha256sum -c - && \
     echo "b042ceb96b60d6f12b2b72fe91b813dc89e590f5d277e9815692485904decc25  /usr/local/versions/0.12.1/terraform" | sha256sum -c - && \
     echo "1a2862811f51effc9c782c47b1b08b9e6401b953b973dc6f734776df01df2618  /usr/local/versions/0.11.10/terraform" | sha256sum -c -
 
