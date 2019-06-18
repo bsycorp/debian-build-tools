@@ -14,7 +14,7 @@ COPY --from=0 /usr/bin/docker-credential-ecr-login /usr/bin/docker-credential-ec
 RUN install_packages apt-transport-https curl gnupg2 ca-certificates software-properties-common
 RUN install_packages bash jq wget telnet vim zip unzip \
             tree dnsutils tcpdump less groff unzip zip postgresql-client \
-            libedit2 python-pip python-setuptools lsb-release
+            libedit2 python-pip python-setuptools lsb-release 
 RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
             add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" && \
             install_packages docker-ce=18.06.2~ce~3-0~debian
@@ -25,12 +25,15 @@ RUN export KUBECTL_VERSION="v1.11.6"; \
 			echo "92c2abb450af253e4a61bef56787a765e921fbc25d5e6343cf33946033b62976  /tmp/kubectl" | sha256sum -c - && \
 			cp /tmp/kubectl /usr/bin && chmod +x /usr/bin/kubectl
 
-RUN export TERRAFORM_VERSION="0.11.10"; \
-			curl -sSL https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -o /tmp/terraform.zip && \
-			echo "43543a0e56e31b0952ea3623521917e060f2718ab06fe2b2d506cfaa14d54527  /tmp/terraform.zip" | sha256sum -c - && \
-			unzip /tmp/terraform.zip -d /usr/bin
-RUN curl https://raw.githubusercontent.com/bsycorp/terraform-provider-shell/master/local.sh | bash
-			
+RUN curl -sSL https://github.com/tfutils/tfenv/releases/download/v1.0.0/tfenv-v1.0.0.zip -o /tmp/tfenv.zip && \
+    echo "5d4d84d0acf04b64dfe3067fcd8e9cfc2918cba530040815ded1454ecdff617b /tmp/tfenv.zip" | sha256sum -c - && \
+    unzip /tmp/tfenv.zip -d /usr/local
+# The validation done by tfenv is not so great, so we just do it ourselves.
+RUN tfenv install 0.12.1 && \
+    tfenv install 0.11.10 && \
+    echo "b042ceb96b60d6f12b2b72fe91b813dc89e590f5d277e9815692485904decc25  /usr/local/versions/0.12.1/terraform" | sha256sum -c - && \
+    echo "1a2862811f51effc9c782c47b1b08b9e6401b953b973dc6f734776df01df2618  /usr/local/versions/0.11.10/terraform" | sha256sum -c -
+
 RUN export KOPS_VERSION="1.11.0"; \
 			curl -sSL https://github.com/kubernetes/kops/releases/download/${KOPS_VERSION}/kops-linux-amd64 -o /tmp/kops && \
 			echo "3804b9975955c0f0a903ab0a81cf80459ad00375a42c08f2c959d81c5b246fe2  /tmp/kops" | sha256sum -c - && \
