@@ -2,12 +2,11 @@ sudo: required
 services: docker
 language: minimal
 script:
-  - DOCKER_CONTENT_TRUST=1 docker build --pull -t "bsycorp/debian-build-tools:1.0.$TRAVIS_BUILD_NUMBER" -t "bsycorp/debian-build-tools:latest" .
+  - build.sh
 deploy:
   provider: script
   script: 
-    - docker login -u $DOCKERUSER -p $DOCKERPASS
-    - docker push bsycorp/debian-build-tools
+    - deploy.sh
   on:
     branch: master
     repo: bsycorp/debian-build-tools
