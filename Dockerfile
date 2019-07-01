@@ -11,23 +11,21 @@ RUN export GOPATH=/go \
 
 FROM bitnami/minideb:stretch
 COPY --from=0 /usr/bin/docker-credential-ecr-login /usr/bin/docker-credential-ecr-login
-RUN install_packages apt-transport-https curl gnupg2 ca-certificates software-properties-common
-RUN install_packages bash jq wget telnet vim zip unzip \
+RUN install_packages curl ca-certificates bash jq wget telnet vim zip unzip \
             tree dnsutils tcpdump less groff unzip zip postgresql-client \
-            libedit2 python-pip python-setuptools lsb-release 
-RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
-            add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" && \
-            install_packages docker-ce=18.06.2~ce~3-0~debian
-RUN pip install 'awscli==1.16.59'
+            libedit2 python3-pip python3-setuptools lsb-release 
+RUN pip3 install awscli
+COPY --from=docker:stable /usr/local/bin/docker /usr/bin/docker
 
 RUN export KUBECTL_VERSION="v1.11.6"; \
 			curl -sSL https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl -o /tmp/kubectl && \
 			echo "92c2abb450af253e4a61bef56787a765e921fbc25d5e6343cf33946033b62976  /tmp/kubectl" | sha256sum -c - && \
-			cp /tmp/kubectl /usr/bin && chmod +x /usr/bin/kubectl
+			mv /tmp/kubectl /usr/bin/kubectl && chmod +x /usr/bin/kubectl
 
 RUN curl -sSL https://github.com/tfutils/tfenv/releases/download/v1.0.0/tfenv-v1.0.0.zip -o /tmp/tfenv.zip && \
     echo "5d4d84d0acf04b64dfe3067fcd8e9cfc2918cba530040815ded1454ecdff617b /tmp/tfenv.zip" | sha256sum -c - && \
-    unzip /tmp/tfenv.zip -d /usr/local
+    unzip /tmp/tfenv.zip -d /usr/local && \
+    rm -f /tmp/tfenv.zip
 # The validation done by tfenv is not so great, so we just do it ourselves.
 RUN tfenv install 0.12.1 && \
     tfenv install 0.12.2 && \
@@ -38,11 +36,11 @@ RUN tfenv install 0.12.1 && \
 
 RUN curl -sSL https://github.com/kubernetes/kops/releases/download/1.11.0/kops-linux-amd64 -o /tmp/kops-1.11.0 && \
 	echo "3804b9975955c0f0a903ab0a81cf80459ad00375a42c08f2c959d81c5b246fe2  /tmp/kops-1.11.0" | sha256sum -c - && \
-	cp /tmp/kops-1.11.0 /usr/bin && chmod +x /usr/bin/kops-1.11.0 && rm /tmp/kops-1.11.0
+	mv /tmp/kops-1.11.0 /usr/bin/kops-1.11.0 && chmod +x /usr/bin/kops-1.11.0
 
 RUN curl -sSL https://github.com/kubernetes/kops/releases/download/1.12.2/kops-linux-amd64 -o /tmp/kops-1.12.2 && \
 	echo "c71fa644741b4e831d417dfacd3bb4e513d8f320f1940de0a011b7dd3a9e4fcb  /tmp/kops-1.12.2" | sha256sum -c - && \
-	cp /tmp/kops-1.12.2 /usr/bin && chmod +x /usr/bin/kops-1.12.2 && rm /tmp/kops-1.12.2
+	mv /tmp/kops-1.12.2 /usr/bin/kops-1.12.2 && chmod +x /usr/bin/kops-1.12.2
 
 RUN ln -s /usr/bin/kops-1.11.0 /usr/bin/kops && \
     ln -s /usr/bin/kops-1.11.0 /usr/local/bin/kops
