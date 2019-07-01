@@ -36,10 +36,16 @@ RUN tfenv install 0.12.1 && \
     echo "b042ceb96b60d6f12b2b72fe91b813dc89e590f5d277e9815692485904decc25  /usr/local/versions/0.12.1/terraform" | sha256sum -c - && \
     echo "1a2862811f51effc9c782c47b1b08b9e6401b953b973dc6f734776df01df2618  /usr/local/versions/0.11.10/terraform" | sha256sum -c -
 
-RUN export KOPS_VERSION="1.12.2"; \
-			curl -sSL https://github.com/kubernetes/kops/releases/download/${KOPS_VERSION}/kops-linux-amd64 -o /tmp/kops && \
-			echo "c71fa644741b4e831d417dfacd3bb4e513d8f320f1940de0a011b7dd3a9e4fcb  /tmp/kops" | sha256sum -c - && \
-			cp /tmp/kops /usr/bin && chmod +x /usr/bin/kops && ln -s /usr/bin/kops /usr/local/bin/kops
+RUN curl -sSL https://github.com/kubernetes/kops/releases/download/1.11.0/kops-linux-amd64 -o /tmp/kops-1.11.0 && \
+	echo "3804b9975955c0f0a903ab0a81cf80459ad00375a42c08f2c959d81c5b246fe2  /tmp/kops-1.11.0" | sha256sum -c - && \
+	cp /tmp/kops-1.11.0 /usr/bin && chmod +x /usr/bin/kops-1.11.0 && rm /tmp/kops-1.11.0
+
+RUN curl -sSL https://github.com/kubernetes/kops/releases/download/1.12.2/kops-linux-amd64 -o /tmp/kops-1.12.2 && \
+	echo "c71fa644741b4e831d417dfacd3bb4e513d8f320f1940de0a011b7dd3a9e4fcb  /tmp/kops-1.12.2" | sha256sum -c - && \
+	cp /tmp/kops-1.12.2 /usr/bin && chmod +x /usr/bin/kops-1.12.2 && rm /tmp/kops-1.12.2
+
+RUN ln -s /usr/bin/kops-1.11.0 /usr/bin/kops && \
+    ln -s /usr/bin/kops-1.11.0 /usr/local/bin/kops
 
 COPY start-docker /usr/bin/start-docker
 COPY codebuild-creds /usr/bin/codebuild-creds
