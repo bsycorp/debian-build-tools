@@ -2,11 +2,11 @@ sudo: required
 services: docker
 language: minimal
 script:
-  - build.sh
+  - ./build.sh
 deploy:
   provider: script
   script: 
-    - deploy.sh
+    - ./deploy.sh
   on:
     branch: master
     repo: bsycorp/debian-build-tools
