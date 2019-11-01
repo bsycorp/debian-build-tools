@@ -12,7 +12,7 @@ RUN export GOPATH=/go \
 FROM bitnami/minideb:stretch
 COPY --from=0 /usr/bin/docker-credential-ecr-login /usr/bin/docker-credential-ecr-login
 RUN install_packages curl ca-certificates bash jq wget telnet vim zip unzip \
-            tree dnsutils tcpdump less groff unzip zip postgresql-client \
+            tree dnsutils moreutils tcpdump less groff unzip zip postgresql-client \
             libedit2 python3-pip python3-setuptools lsb-release 
 RUN pip3 install awscli
 COPY --from=docker:stable /usr/local/bin/docker /usr/bin/docker
