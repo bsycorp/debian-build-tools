@@ -1,19 +1,11 @@
-FROM golang:1.10
-RUN export GOPATH=/go \
-    && export PATH=$GOPATH/bin:$PATH \
-    && chmod -R 777 $GOPATH \
-    && APP_REPO=github.com/awslabs/amazon-ecr-credential-helper \
-    && git clone https://$APP_REPO $GOPATH/src/$APP_REPO \
-    && cd $GOPATH/src/$APP_REPO \
-    && GOOS=linux CGO_ENABLED=0 go build -installsuffix cgo \
-       -a -ldflags '-s -w' -o /usr/bin/docker-credential-ecr-login \
-       ./ecr-login/cli/docker-credential-ecr-login 
-
 FROM bitnami/minideb:stretch
-COPY --from=0 /usr/bin/docker-credential-ecr-login /usr/bin/docker-credential-ecr-login
 RUN install_packages curl ca-certificates bash jq wget telnet vim zip unzip \
             tree dnsutils moreutils tcpdump less groff unzip zip postgresql-client \
-            libedit2 python3-pip python3-setuptools lsb-release 
+            libedit2 python3-pip python3-setuptools lsb-release git
+RUN curl -sSL https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com/0.4.0/linux-amd64/docker-credential-ecr-login -o /tmp/docker-credential-ecr-login && \
+    echo "2c8fc418fe1b5195388608c1cfb99ba008645f3f1beb312772c9490c39aa5904 /tmp/docker-credential-ecr-login" | sha256sum -c - && \
+    cp -f /tmp/docker-credential-ecr-login /usr/bin/docker-credential-ecr-login && \
+    chmod +x /usr/bin/docker-credential-ecr-login
 RUN pip3 install awscli
 COPY --from=docker:stable /usr/local/bin/docker /usr/bin/docker
 # 1.11.6
