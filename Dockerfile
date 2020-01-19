@@ -8,7 +8,7 @@ RUN curl -sSL https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazona
     chmod +x /usr/bin/docker-credential-ecr-login
 RUN pip3 install awscli
 # docker:stable 18.06
-COPY --from=docker@d0ae46aa08806ffc1c4de70a4eb585df33470643a9d2ccf055ff3ec91ba5b0b0 /usr/local/bin/docker /usr/bin/docker
+COPY --from=docker@sha256:d0ae46aa08806ffc1c4de70a4eb585df33470643a9d2ccf055ff3ec91ba5b0b0 /usr/local/bin/docker /usr/bin/docker
 # kubectl 1.11.6
 COPY --from=bitnami/kubectl@sha256:92e9b698b80a298ac355c74f0bbb0318b994fcf42855fd7010f5088043b396da /opt/bitnami/kubectl/bin/kubectl /usr/bin/kubectl
 # KOPS 1.11.0
