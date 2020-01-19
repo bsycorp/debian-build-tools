@@ -19,13 +19,16 @@ COPY --from=aztek/kops@sha256:832b4fca5d8c548d6ec6f2a6cc3100bb236122926a2cd0d58a
 COPY --from=aztek/kops@sha256:0e80884988938e8ef3f06c002ad9251a119011a5abd84564a3550ac37ea94248 /usr/local/bin/kops /usr/bin/kops-1.15.0
 RUN ln -s /usr/bin/kops-1.11.0 /usr/bin/kops && \
     ln -s /usr/bin/kops-1.11.0 /usr/local/bin/kops
-    
+# tfswitch
 RUN curl -sSL https://github.com/warrensbox/terraform-switcher/releases/download/0.7.737/terraform-switcher_0.7.737_linux_amd64.tar.gz -o /tmp/tfswitch.tar.gz && \
     echo "74ddef90336aad8a54bca94072f71e011695cc17e2e2445e369e801c938cfb08 /tmp/tfswitch.tar.gz" | sha256sum -c - && \
     tar -xf /tmp/tfswitch.tar.gz -C /usr/local/bin && \
     rm -f /tmp/tfswitch.tar.gz && \
     tfswitch 0.11.10 && \
     tfswitch 0.12.2
+# golang 1.12
+RUN curl -sSL https://dl.google.com/go/go1.12.7.linux-amd64.tar.gz -o /tmp/go1.12.7.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf /tmp/go1.12.7.linux-amd64.tar.gz
 
 COPY start-docker /usr/bin/start-docker
 COPY codebuild-creds /usr/bin/codebuild-creds
