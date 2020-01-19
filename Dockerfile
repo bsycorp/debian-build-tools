@@ -15,11 +15,11 @@ COPY --from=hashicorp/terraform@sha256:3d5eb7a88d94f5216658b804acd70597e0315b883
 # 0.12.2
 COPY --from=hashicorp/terraform@sha256:334ecc41ba5d55cc3886cf730dec56dd5bb8d3f6d2247f3cafa54ff753d43f18 /bin/terraform /usr/local/versions/0.12.2/terraform
 
-RUN curl -sSL https://github.com/tfutils/tfenv/releases/download/v1.0.0/tfenv-v1.0.0.zip -o /tmp/tfenv.zip && \
-    echo "5d4d84d0acf04b64dfe3067fcd8e9cfc2918cba530040815ded1454ecdff617b /tmp/tfenv.zip" | sha256sum -c - && \
-    unzip /tmp/tfenv.zip -d /usr/local && \
-    rm -f /tmp/tfenv.zip && \
-    tfenv use 0.11.10
+RUN curl -sSL https://github.com/warrensbox/terraform-switcher/releases/download/0.7.737/terraform-switcher_0.7.737_linux_amd64.tar.gz -o /tmp/tfswitch.tar.gz && \
+    echo "74ddef90336aad8a54bca94072f71e011695cc17e2e2445e369e801c938cfb08 /tmp/tfswitch.tar.gz" | sha256sum -c - && \
+    tar -xf /tmp/tfswitch.tar.gz -C /usr/local/bin && \
+    rm -f /tmp/tfswitch.tar.gz && \
+    tfswitch 0.12.2
 
 # 1.11.0
 COPY --from=aztek/kops@sha256:67fd070812756b9beb7d4f5746fd9c8e287e9c5665819ecd587afbc3c8b52a2e /usr/local/bin/kops /usr/bin/kops-1.11.0
