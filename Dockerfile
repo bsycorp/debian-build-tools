@@ -1,7 +1,7 @@
 FROM bitnami/minideb:stretch
 RUN install_packages curl ca-certificates bash jq wget telnet vim zip unzip \
             tree dnsutils moreutils tcpdump less groff unzip zip postgresql-client \
-            libedit2 python3-pip python3-setuptools lsb-release git openssh-client
+            libedit2 python3-pip python3-setuptools lsb-release git openssh-client liblz4-tool
 RUN curl -sSL https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com/0.4.0/linux-amd64/docker-credential-ecr-login -o /tmp/docker-credential-ecr-login && \
     echo "2c8fc418fe1b5195388608c1cfb99ba008645f3f1beb312772c9490c39aa5904 /tmp/docker-credential-ecr-login" | sha256sum -c - && \
     cp -f /tmp/docker-credential-ecr-login /usr/bin/docker-credential-ecr-login && \
