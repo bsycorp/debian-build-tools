@@ -6,7 +6,7 @@ RUN curl -sSL https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazona
     echo "2c8fc418fe1b5195388608c1cfb99ba008645f3f1beb312772c9490c39aa5904 /tmp/docker-credential-ecr-login" | sha256sum -c - && \
     cp -f /tmp/docker-credential-ecr-login /usr/bin/docker-credential-ecr-login && \
     chmod +x /usr/bin/docker-credential-ecr-login && \
-    rm -rf /tmp/
+    rm -rf /tmp/*
 RUN pip3 install awscli
 # docker:stable 18.06
 COPY --from=docker@sha256:d0ae46aa08806ffc1c4de70a4eb585df33470643a9d2ccf055ff3ec91ba5b0b0 /usr/local/bin/docker /usr/bin/docker
@@ -22,15 +22,16 @@ RUN ln -s /usr/bin/kops-1.11.0 /usr/bin/kops && \
     ln -s /usr/bin/kops-1.11.0 /usr/local/bin/kops
 # tfswitch
 RUN curl -sSL https://github.com/warrensbox/terraform-switcher/releases/download/0.7.737/terraform-switcher_0.7.737_linux_amd64.tar.gz -o /tmp/tfswitch.tar.gz && \
+    echo "74ddef90336aad8a54bca94072f71e011695cc17e2e2445e369e801c938cfb08 /tmp/tfswitch.tar.gz" | sha256sum -c - && \
     tar -xf /tmp/tfswitch.tar.gz -C /usr/local/bin && \
     rm -f /tmp/tfswitch.tar.gz && \
     tfswitch 0.11.10 && \
     tfswitch 0.12.2 && \
-    rm -rf /tmp/
+    rm -rf /tmp/*
 # golang 1.12
 RUN curl -sSL https://dl.google.com/go/go1.12.7.linux-amd64.tar.gz -o /tmp/go1.12.7.linux-amd64.tar.gz && \
     tar -C /usr/local -xzf /tmp/go1.12.7.linux-amd64.tar.gz  && \
-    rm -rf /tmp/
+    rm -rf /tmp/*
 
 COPY start-docker /usr/bin/start-docker
 COPY codebuild-creds /usr/bin/codebuild-creds
