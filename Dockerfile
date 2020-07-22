@@ -9,6 +9,10 @@ RUN curl -sSL https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazona
     chmod +x /usr/bin/docker-credential-ecr-login && \
     rm -rf /tmp/*
 RUN pip3 install awscli
+# bsycorp/keymaster v0.1.3
+RUN curl -sSL https://github.com/bsycorp/keymaster/releases/download/v0.1.3/km-linux-x64 -o /tmp/km && \
+    echo "48462faf454b871d2ae7ce0dab43815df0f89c6c7b4ee7fcaaaadbb8ff959635 /tmp/km" | sha256sum -c - && \
+    mv /tmp/km /usr/bin/km && chmod 755 /usr/bin/km
 # docker:stable 18.06
 RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
             add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" && \
